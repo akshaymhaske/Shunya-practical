@@ -1,0 +1,57 @@
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <shunyaInterfaces.h>
+#include "YF-S201.h"
+
+#define PIN 33
+#define sensorpin 11
+
+// Select the GPIO pin that supports PWM input. Pins 32 & 33 on Tinkerboard.
+
+int main(void) {
+
+    int flow,val;
+
+    /*Initialize Shunya Interfaces library*/
+    shunyaInterfacesSetup();
+
+    /*Initialize physical pin connected to Water Flow Sensor*/
+    waterFlowSensorSetup(PIN);
+           pinMode (sensorpin, INPUT);
+
+    while (1) {
+          
+           /*Read the Sensor*/
+                val = digitalRead(sensorpin); 
+                if(val == HIGH) {
+                	printf("Obstacle Detected!!");
+                	
+                	 flow = waterFlowSensorRead();
+
+        if (flow == -1) {
+            printf("Error reading water flow!\n");
+        } else
+            printf("Water flow in litres per hour (L/h) : %d \n", flow);
+
+        delay(2000);
+                	
+                }
+                 else 
+                 {
+                        printf("No Obstacle Detected.");
+                }
+                 delay(100);
+                }
+                
+          
+
+       
+
+    return 0;
+}
